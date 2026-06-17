@@ -161,6 +161,13 @@ def main() -> None:
 
     import asyncio
     
+    # Fix for Python 3.10+ event loop issues
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    
     # Create the Application
     application = Application.builder().token(TOKEN).post_init(post_init).build()
 
