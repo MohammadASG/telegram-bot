@@ -159,7 +159,9 @@ def main() -> None:
         print("You can get a token by messaging @BotFather on Telegram.\n")
         return
 
-    # Create the Application and pass it your bot's token.
+    import asyncio
+    
+    # Create the Application
     application = Application.builder().token(TOKEN).post_init(post_init).build()
 
     # Register core command handlers
@@ -174,7 +176,6 @@ def main() -> None:
 
     # Start the bot based on environment settings
     if WEBHOOK_URL:
-        # Render / Production Webhook mode
         PORT = int(os.environ.get("PORT", 8000))
         webhook_path = f"webhook/{TOKEN}"
         full_webhook_url = f"{WEBHOOK_URL.rstrip('/')}/{webhook_path}"
@@ -190,7 +191,6 @@ def main() -> None:
             allowed_updates=Update.ALL_TYPES
         )
     else:
-        # Local / Development Polling mode
         logger.info("Starting bot in local Polling mode.")
         application.run_polling(allowed_updates=Update.ALL_TYPES)
 
